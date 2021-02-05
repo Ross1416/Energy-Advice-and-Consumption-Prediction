@@ -19,7 +19,6 @@ longestUnbroken = 0
 
 count = 0
 
-
 for index, row in data.iterrows():
 
     if pd.notna(row["Total_Feeder"]):
@@ -30,9 +29,8 @@ for index, row in data.iterrows():
     else:
         if chunkFound:
             tmp_end = index
-            # print(tmp_start,tmp_end)
             lengthUnbroken = tmp_end - tmp_start
-            # print(lengthUnbroken)
+
             if lengthUnbroken > longestUnbroken:
                 startIndex = tmp_start
                 endIndex = tmp_end
@@ -43,10 +41,12 @@ for index, row in data.iterrows():
     # if count > 10000:
     #     break
 
-
 startDatetime = data.iloc[startIndex]["Date_time"]
 endDatetime = data.iloc[endIndex]["Date_time"]
 
 print("Longest unbroken is", longestUnbroken)
 print("Starting at", startDatetime, startIndex)
 print("Ending at", endDatetime, endIndex)
+
+unbroken_dataset = data[startIndex:endIndex]
+unbroken_dataset.to_csv("Unbroken_dataset01.csv", index=False)
