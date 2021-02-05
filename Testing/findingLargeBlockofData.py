@@ -21,16 +21,20 @@ count = 0
 
 
 for index, row in data.iterrows():
-    if not pd.isna(row["Total_Feeder"]):
-        chunkFound = True
-        tmp_start = index
+    if pd.notna(row["Total_Feeder"]):
+
+        if not chunkFound:
+            tmp_start = index
+            chunkFound = True
+
+
 
     else:
         if chunkFound:
             tmp_end = index
             # print(tmp_start,tmp_end)
             lengthUnbroken = tmp_end - tmp_start
-            print(lengthUnbroken)
+            # print(lengthUnbroken)
             if lengthUnbroken > longestUnbroken:
                 startIndex = tmp_start
                 endIndex = tmp_end
@@ -38,7 +42,7 @@ for index, row in data.iterrows():
             chunkFound = False
 
     count += 1
-    if count > 50000:
+    if count > 10000:
         break
 
 
