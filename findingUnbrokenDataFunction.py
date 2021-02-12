@@ -49,4 +49,4 @@ def findData(fullDatasetPath, outputPath):
     outputData.to_csv(outputPath, index=False)
 
 
-findData("../Energy_Advice_and_Consumption_Prediction_Dataset.csv", "trainingDataset.csv")
+findData("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "trainingDataset.csv")
