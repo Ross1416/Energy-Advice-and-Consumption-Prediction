@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.svm import SVR
 
-df = pd.read_csv("Unbroken_dataset01.csv", )
+df = pd.read_csv("..\\Energy_Advice_and_Consumption_Prediction_Dataset.csv")
 
 df.columns = ["Datetime", "Total_Feeder"]
 
@@ -14,9 +14,11 @@ df.set_index('Datetime', inplace=True)
 df["Year"] = df.index.year
 df["Month"] = df.index.month
 df["Day"] = df.index.day
-# df["DayOfYear"] = df.index.dayofyear      ## Up to 20% from 12% when i remove this
+# df["DayOfYear"] = df.index.dayofyear
 df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
+
+df.dropna(inplace=True)
 
 X = df.drop(['Total_Feeder'], axis=1).values
 y = df['Total_Feeder'].values
@@ -42,3 +44,4 @@ df['Prediction'] = predictions
 df['Total_Feeder'].plot()
 df['Prediction'].plot()
 plt.show()
+
