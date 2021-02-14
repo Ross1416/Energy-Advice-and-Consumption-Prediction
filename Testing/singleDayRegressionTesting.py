@@ -5,6 +5,8 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 
 ## https://realpython.com/linear-regression-in-python/
+## https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html
+
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.svm import SVR
@@ -24,14 +26,15 @@ df["Minute"] = df.index.minute
 
 df = df.loc["2015-03-13"]
 
-start_min = df.iloc[0]["Minute"]
-
-mins_from_start = []
-for min in df["Minute"].values:
-    total_min = int(min - start_min)
-    mins_from_start.append(total_min)
-
-df["MinFromStart"] = mins_from_start
+# Other option ups accuracy from 50% to 62%
+# start_min = df.iloc[0]["Minute"]
+#
+# mins_from_start = []
+# for min in df["Minute"].values:
+#     total_min = int(min - start_min)
+#     mins_from_start.append(total_min)
+#
+# df["MinFromStart"] = mins_from_start
 
 
 
@@ -88,9 +91,12 @@ y_test = y[num_train:]
 ######################
 
 ################# 3rd try ####### SEEMS TO WORK
-# svr = SVR(kernel='poly', C=100, gamma='auto', degree=3, epsilon=.1,coef0=1)
-svr = SVR(kernel='rbf', C=100, gamma='auto', degree=3, epsilon=.1,coef0=1)
+svr = SVR(kernel='rbf', C=40, gamma='auto')
+
+
 svr.fit(X_train,y_train)
+accuracy = svr.score(X_test,y_test)
+print(accuracy)             ## only 50% accuracy tho
 predictions = svr.predict(X)
 ###############
 
