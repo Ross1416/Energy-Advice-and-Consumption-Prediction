@@ -37,7 +37,7 @@ svr = SVR(kernel='rbf', C=40, gamma='auto')
 
 svr.fit(X_train,y_train)
 accuracy = svr.score(X_test,y_test)
-print(accuracy)     ## only 20%
+print(accuracy)     ## only 67%
 predictions = svr.predict(X)
 
 df['Prediction'] = predictions
