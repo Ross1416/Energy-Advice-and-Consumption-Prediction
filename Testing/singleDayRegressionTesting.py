@@ -11,7 +11,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.svm import SVR
 
-df = pd.read_csv("Unbroken_dataset01.csv", )
+df = pd.read_csv("Unbroken_dataset01.csv")
 
 df.columns = ["Datetime", "Total_Feeder"]
 
@@ -20,11 +20,13 @@ df['Datetime'] = pd.to_datetime(df['Datetime'],
 
 df.set_index('Datetime', inplace=True)
 
+
 # df["DayOfYear"] = df.index.dayofyear
 df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
 
 df = df.loc["2015-03-13"]
+
 
 # Other option ups accuracy from 50% to 62%
 # start_min = df.iloc[0]["Minute"]
