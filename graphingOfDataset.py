@@ -10,14 +10,16 @@ print("")
 print("TAIL:")
 print(df.tail())        # Print the last 5 rows of the data
 print("")
-print("DATATYPES:")
-print(df.dtypes)        # Print the types of data in each column
-print("")
 print("SHAPE:")
 print(df.shape)         # Print the shape of the data
 print("")
 
 df.columns = ["Datetime", "Total_Feeder"]       # Rename the column headings so that the unamed one becomes 'Datetime'
+
+print("DATATYPES:")
+print(df.dtypes)        # Print the types of data in each column
+print("")
+
 df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')  # changes the 'Datetime' column to a datetime data type
 
 print("DATATYPES:")
@@ -60,7 +62,7 @@ plt.tight_layout()
 plt.show()
 
 # HISTOGRAM OF ENTIRE DATASET
-df.hist(bins=150)
+df.hist(bins=50)
 plt.ylabel("Number of occurances")
 plt.xlabel("Energy Consumption")
 plt.title("Histogram of Energy Consumption for entire dataset")
