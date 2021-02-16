@@ -24,9 +24,10 @@ df.set_index('Datetime', inplace=True)
 # df["DayOfYear"] = df.index.dayofyear
 df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
+# df["Day"] = df.index.dayofweek
 
 df = df.loc["2015-03-13"]
-
+# df = df.loc["2015-03-23":"2015-03-29"]
 
 # Other option ups accuracy from 50% to 62%
 # start_min = df.iloc[0]["Minute"]
@@ -37,8 +38,6 @@ df = df.loc["2015-03-13"]
 #     mins_from_start.append(total_min)
 #
 # df["MinFromStart"] = mins_from_start
-
-
 
 X = df.drop(['Total_Feeder'], axis=1).values
 y = df['Total_Feeder'].values
@@ -57,7 +56,6 @@ X_test = X[num_train:]
 
 y_train = y[:num_train]
 y_test = y[num_train:]
-
 
 
 ############### all crap as well
@@ -94,7 +92,6 @@ y_test = y[num_train:]
 
 ################# 3rd try ####### SEEMS TO WORK
 svr = SVR(kernel='rbf', C=40, gamma='auto')
-
 
 svr.fit(X_train,y_train)
 accuracy = svr.score(X_test,y_test)

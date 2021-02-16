@@ -23,9 +23,10 @@ df.set_index('Datetime', inplace=True)
 # df["DayOfYear"] = df.index.dayofyear
 df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
+# df["Day"] = df.index.dayofweek
 
 df = df.loc["2015-03-13"]
-
+# df = df.loc["2015-03-23":"2015-03-29"]
 
 X = df.drop(['Total_Feeder'], axis=1).values
 y = df['Total_Feeder'].values
@@ -44,7 +45,7 @@ reg = RandomForestRegressor(n_estimators = 100, max_depth=5,random_state = 20)
 # reg = BaggingRegressor()
 # reg = ExtraTreesRegressor(n_estimators=10, random_state=0)
 # reg = GradientBoostingRegressor()
-# reg = HistGradientBoostingRegressor()
+# reg = HistGradientBoosting    Regressor()
 # kernel = DotProduct() + WhiteKernel()
 # reg = GaussianProcessRegressor(kernel=kernel, random_state=0)
 # reg = LogisticRegression()
