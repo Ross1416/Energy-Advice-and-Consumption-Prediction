@@ -28,7 +28,7 @@ df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')  # c
 # print("")
 
 df.set_index('Datetime', inplace=True)      # Replace the numeric index with the 'Datetime' column
-
+#
 # PLOT OF ENTIRE DATASET
 df.plot()
 plt.ylabel("Energy Consumption")
@@ -59,11 +59,11 @@ plt.title("Energy Consumption against time on individual days")
 plt.tight_layout()
 plt.show()
 
-# # PLOT OF A SINGLE WEEK
-df.loc["2015-03-02":"2015-03-08"].plot()
+# PLOT OF A SINGLE WEEK
+df.loc["2015-03-23":"2015-03-29"].plot()
 plt.ylabel("Energy Consumption")
 plt.xlabel("Day of Week")
-plt.title("Energy Consumption against time on the week of the 02/03/2015")
+plt.title("Energy Consumption against time on the week of the 23/03/2015")
 plt.tight_layout()
 plt.show()
 
