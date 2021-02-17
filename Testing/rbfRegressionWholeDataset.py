@@ -13,6 +13,8 @@ df['Datetime'] = pd.to_datetime(df['Datetime'],
 
 df.set_index('Datetime', inplace=True)
 
+
+
 df["Year"] = df.index.year
 df["Month"] = df.index.month
 df["Day"] = df.index.day
@@ -22,8 +24,8 @@ df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
 
 # print(df.head())
-
 df.dropna(inplace=True)
+# print(df.head())
 
 X = df.drop(['Total_Feeder'], axis=1).values
 y = df['Total_Feeder'].values

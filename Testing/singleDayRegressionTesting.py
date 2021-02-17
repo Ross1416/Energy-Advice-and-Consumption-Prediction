@@ -20,6 +20,8 @@ df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')  # c
 df.set_index('Datetime', inplace=True)
 
 # df["DayOfYear"] = df.index.dayofyear
+
+print(df.head())
 df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
 # df["Day"] = df.index.dayofweek

@@ -9,6 +9,10 @@ print(df.info())
 print("DESCRITION:")
 print(df.describe())
 
+count = df["Total_Feeder"].count()
+percent = (count/df.shape[0])*100
+print("PERCENT:", percent)
+
 print("HEAD:")
 print(df.head())        # Print the first 5 rows of the data
 
