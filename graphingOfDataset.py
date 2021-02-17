@@ -1,31 +1,33 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
-import numpy as np
 
 df = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")    # Open the CSV file as a pandas Dataframe
 
-# print("HEAD:")
-# print(df.head())        # Print the first 5 rows of the data
-# print("")
-# print("TAIL:")
-# print(df.tail())        # Print the last 5 rows of the data
-# print("")
-# print("SHAPE:")
-# print(df.shape)         # Print the shape of the data
-# print("")
+print("INFO:")
+print(df.info())
+
+print("DESCRITION:")
+print(df.describe())
+
+print("HEAD:")
+print(df.head())        # Print the first 5 rows of the data
+
+print("TAIL:")
+print(df.tail())        # Print the last 5 rows of the data
+
+print("SHAPE:")
+print(df.shape)         # Print the shape of the data
+
 
 df.columns = ["Datetime", "Total_Feeder"]       # Rename the column headings so that the unamed one becomes 'Datetime'
 
-# print("DATATYPES:")
-# print(df.dtypes)        # Print the types of data in each column
-# print("")
+print("DATATYPES:")
+print(df.dtypes)        # Print the types of data in each column
 
 df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')  # changes the 'Datetime' column to a datetime data type
 
-# print("DATATYPES:")
-# print(df.dtypes)        # Print the types of data in each column
-# print("")
+print("DATATYPES:")
+print(df.dtypes)        # Print the types of data in each column
 
 df.set_index('Datetime', inplace=True)      # Replace the numeric index with the 'Datetime' column
 #
@@ -48,7 +50,7 @@ day_df.columns = ['2015-03-01']
 day_df['2015-03-02'] = df.loc["2015-03-02"].values
 day_df['2015-03-03'] = df.loc["2015-03-03"].values
 ax = day_df.plot(x_compat=True)
-# print(day_df.tail())
+
 ax.set_xticks(["00:00","02:00","04:00","06:00","08:00","10:00","12:00","14:00","16:00","18:00","20:00","22:00"])
 ax.set_xlim("00:00", "23:51")
 
