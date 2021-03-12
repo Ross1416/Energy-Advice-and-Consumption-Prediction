@@ -22,7 +22,10 @@ df["Minute"] = df.index.minute
 
 df.dropna(inplace=True)
 
-# day_df = df.loc["2014-08-08"]
+day_df = df.loc["2015-03-02":"2015-03-29"]
+# day_df.plot()
+# day_df['Total_Feeder'].plot()
+# plt.show()
 # X = day_df.drop(['Total_Feeder'], axis=1).values
 # y = day_df['Total_Feeder'].values
 
@@ -43,6 +46,7 @@ X = np.array(X)
 # df_future = pd.DataFrame(X, columns=['Year', 'Month', 'Day', 'DayofYear', 'Week', 'Hour', 'Minute'], index=future)
 df_future = pd.DataFrame(X, columns=['Month', 'DayofWeek', 'DayofMonth', 'Hour', 'Minute'], index=future)
 
+X2 = day_df.drop(['Total_Feeder'], axis=1).values
 
 # model_file = "model.pickle"
 model_file = "fullmodel_noYear_noWeek.pickle"
@@ -51,10 +55,16 @@ with open(model_file, 'rb') as file:
     svr = pickle.load(file)
 
 predictions = svr.predict(X)
+pre2 = svr.predict(X2)
 
 df_future['Predictions'] = predictions
 df_future['Predictions'].plot()
 plt.show()
+# print(df_future.head())
 
-print(df_future.head())
-print(df_future.tail())
+day_df['Predictions'] = pre2
+day_df['Predictions'].plot()
+plt.show()
+# print(day_df.head())
+# print(df_future.head())
+# print(df_future.tail())
