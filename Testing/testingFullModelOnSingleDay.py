@@ -23,11 +23,9 @@ df.set_index('Datetime', inplace=True)
 # df["Hour"] = df.index.hour
 # df["Minute"] = df.index.minute
 
-df["Year"] = df.index.year
 df["Month"] = df.index.month
 df["DayofWeek"] = df.index.dayofweek
 df["DayofMonth"] = df.index.day
-df["Week"] = df.index.week
 df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
 
@@ -37,8 +35,8 @@ df.dropna(inplace=True)
 # pd.set_option('display.max_columns', None)
 # print(df.head())
 
-# day_df = df.loc["2014-08-08"]
-day_df = df.loc["2014-08-01":"2014-08-08"]
+day_df = df.loc["2014-08-08"]
+# day_df = df.loc["2014-08-01":"2014-08-08"]
 X = day_df.drop(['Total_Feeder'], axis=1).values
 y = day_df['Total_Feeder'].values
 
@@ -51,7 +49,8 @@ X_test = X[num_train:]
 y_train = y[:num_train]
 y_test = y[num_train:]
 
-model_file = "fullmodel.pickle"
+# model_file = "fullmodel.pickle"
+model_file = "fullmodel_noYear_noWeek.pickle"
 # model_file = "model.pickle"
 
 

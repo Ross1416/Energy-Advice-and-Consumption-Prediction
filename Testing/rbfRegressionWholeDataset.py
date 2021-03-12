@@ -15,12 +15,12 @@ df.set_index('Datetime', inplace=True)
 
 
 
-df["Year"] = df.index.year
+# df["Year"] = df.index.year
 df["Month"] = df.index.month
 df["DayofWeek"] = df.index.dayofweek
 df["DayofMonth"] = df.index.day
 # df["DayOfYear"] = df.index.dayofyear
-df["Week"] = df.index.week
+# df["Week"] = df.index.week
 df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
 pd.set_option('display.max_columns', None)
@@ -45,7 +45,7 @@ X_test = X[num_train:]
 y_train = y[:num_train]
 y_test = y[num_train:]
 
-model_file = "fullmodel.pickle"
+model_file = "fullmodel_noYear_noWeek.pickle"
 
 svr = SVR(kernel='rbf', C=40, gamma='auto')
 
