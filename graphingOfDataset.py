@@ -37,7 +37,7 @@ df.set_index('Datetime', inplace=True)      # Replace the numeric index with the
 #
 # PLOT OF ENTIRE DATASET
 df.plot()
-plt.ylabel("Energy Consumption")
+plt.ylabel("Energy Consumption (kW)")
 plt.xlabel("Date and time")
 plt.title("Energy Consumption against Date and time")
 plt.tight_layout()
@@ -59,38 +59,37 @@ ax.set_xticks(["00:00","02:00","04:00","06:00","08:00","10:00","12:00","14:00","
 ax.set_xlim("00:00", "23:51")
 
 
-plt.ylabel("Energy Consumption")
+plt.ylabel("Energy Consumption (kW)")
 plt.xlabel("Time")
 plt.title("Energy Consumption against time on individual days")
 plt.tight_layout()
 plt.show()
 
 # PLOT OF A SINGLE WEEK
-df.loc["2015-03-23":"2015-03-29"].plot()
-plt.ylabel("Energy Consumption")
+df.loc["2015-03-02":"2015-03-08"].plot()
+# df.loc["2015-03-23":"2015-03-29"].plot()
+plt.ylabel("Energy Consumption (kW)")
 plt.xlabel("Day of Week")
-plt.title("Energy Consumption against time on the week of the 23/03/2015")
+plt.title("Energy Consumption against time on the week of the 02/03/2015")
 plt.tight_layout()
 plt.show()
 
 
 # PLOT OF A SINGLE MONTH
-mean_month = df.loc["2015-09"].resample("D").mean()
-mean_month.columns = ["Average consumption of days"]
-ax = df.loc["2015-09"].plot()
-mean_month.plot(ax=ax)
-plt.ylabel("Energy Consumption")
+df.loc["2015-03"].plot()
+# df.loc["2015-09"].plot()
+plt.ylabel("Energy Consumption (kW)")
 plt.xlabel("Day of Month")
-plt.title("Energy Consumption against time in September of 2015")
+plt.title("Energy Consumption against time in March of 2015")
 plt.tight_layout()
 plt.show()
 
 # PLOT OF A SINGLE YEAR
-mean_year = df.loc["2014"].resample("M").mean()
+mean_year = df.loc["2015"].resample("M").mean()
 mean_year.columns = ["Average consumption of months"]
-ax = df.loc["2014"].plot()
+ax = df.loc["2015"].plot()
 mean_year.plot(ax=ax)
-plt.ylabel("Energy Consumption")
+plt.ylabel("Energy Consumption (kW)")
 plt.xlabel("Date")
 plt.title("Energy Consumption against time in 2014")
 plt.tight_layout()
@@ -100,7 +99,7 @@ plt.show()
 # HISTOGRAM OF ENTIRE DATASET
 df.hist(bins=50)
 plt.ylabel("Number of occurances")
-plt.xlabel("Energy Consumption")
+plt.xlabel("Energy Consumption (kW)")
 plt.title("Histogram of Energy Consumption for entire dataset")
 plt.tight_layout()
 plt.show()

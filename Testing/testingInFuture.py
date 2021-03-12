@@ -29,7 +29,8 @@ df.dropna(inplace=True)
 # y = day_df['Total_Feeder'].values
 
 X = []
-future = pd.date_range(start='2016/1/1', end='2016/1/8', freq='10T')
+# future = pd.date_range(start='2016/1/1', end='2016/1/8', freq='10T')
+future = pd.date_range(start='2016/1/1', end='2016/1/30', freq='10T')
 
 pd.set_option('display.max_columns', None)
 
@@ -41,7 +42,8 @@ X = np.array(X)
 df_future = pd.DataFrame(X, columns=['Year', 'Month', 'Day', 'DayofYear', 'Week', 'Hour', 'Minute'], index=future)
 
 
-model_file = "model.pickle"
+# model_file = "model.pickle"
+model_file = "fullmodel.pickle"
 
 with open(model_file, 'rb') as file:
     svr = pickle.load(file)

@@ -17,15 +17,21 @@ df.set_index('Datetime', inplace=True)
 
 df["Year"] = df.index.year
 df["Month"] = df.index.month
-df["Day"] = df.index.day
-df["DayOfYear"] = df.index.dayofyear
+df["DayofWeek"] = df.index.dayofweek
+df["DayofMonth"] = df.index.day
+# df["DayOfYear"] = df.index.dayofyear
 df["Week"] = df.index.week
 df["Hour"] = df.index.hour
 df["Minute"] = df.index.minute
+pd.set_option('display.max_columns', None)
+# print(df.head())
+# print(df.iloc[2200])
+# print(df.iloc[0])
 
 # print(df.head())
 df.dropna(inplace=True)
 # print(df.head())
+
 
 X = df.drop(['Total_Feeder'], axis=1).values
 y = df['Total_Feeder'].values
@@ -39,28 +45,28 @@ X_test = X[num_train:]
 y_train = y[:num_train]
 y_test = y[num_train:]
 
-model_file = "model.pickle"
+model_file = "fullmodel.pickle"
 
-# svr = SVR(kernel='rbf', C=40, gamma='auto')
-#
-# start_time = time.time()
-#
-# svr.fit(X_train,y_train)
-#
-# time_taken = time.time() - start_time
-# print("Time taken:",time_taken)
-#
-# accuracy = svr.score(X_test,y_test)
-# print(accuracy)     ## only 67%
+svr = SVR(kernel='rbf', C=40, gamma='auto')
+
+start_time = time.time()
+
+svr.fit(X_train, y_train)
+
+time_taken = time.time() - start_time
+print("Time taken:",time_taken)
+
+accuracy = svr.score(X_test,y_test)
+print(accuracy)     ## only 67%
 
 
-# with open(model_file, 'wb') as file:
-#     pickle.dump(svr, file)
+with open(model_file, 'wb') as file:
+    pickle.dump(svr, file)
 
 # Load from file
 
-with open(model_file, 'rb') as file:
-    svr = pickle.load(file)
+# with open(model_file, 'rb') as file:
+#     svr = pickle.load(file)
 
 predictions = svr.predict(X)
 
@@ -68,4 +74,6 @@ df['Prediction'] = predictions
 df['Total_Feeder'].plot()
 df['Prediction'].plot()
 plt.show()
+
+print(df.head())
 
