@@ -1,6 +1,0 @@
-print("##########################################")
-print("##### Energy Consumption Prediction ######")
-print("##########################################")
-print("")
-print("Please enter a date to receive a prediction: ")
-date = input("> ")

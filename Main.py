@@ -100,7 +100,7 @@ def GetPredictions(model, date_from, date_to, save=False, save_folder=None):
 
 
 # PLOTS PREDICTIONS ON GRAPH
-def Plot(predictions, save=True, save_folder=None, actuals=None):
+def Plot(predictions, save=False, save_folder=None, actuals=None):
     ax = predictions.plot()
 
     if actuals is not None:
@@ -131,13 +131,7 @@ def Plot(predictions, save=True, save_folder=None, actuals=None):
     plt.show()
 
 
-model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
-# df = GetPredictions(model, "02/03/2015", "03/03/2015", save=True, save_folder="Predictions")
-df = GetPredictions(model, "02/03/2021", "03/03/2021", save=True, save_folder="Predictions")
-
-data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
-data.columns = ["Datetime", "Total_Feeder"]
-data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
-data.set_index('Datetime', inplace=True)
-
-Plot(df, save=True, save_folder="Predictions", actuals=data)
+# model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
+# df = GetPredictions(model, "02/03/2021", "03/03/2021", save=True, save_folder="Predictions")
+#
+# Plot(df, save=True, save_folder="Predictions")
