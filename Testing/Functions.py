@@ -115,6 +115,8 @@ def get_predictions(model, date_from, date_to=None, dataset_path=None, show_actu
     df['Predictions'].plot()
     plt.legend()
     plt.show()
+    save_path = date_from + date_to
+    plt.savefig()
 
 
 # create_model("..\\Energy_Advice_and_Consumption_Prediction_Dataset.csv", "fullmodel_noYear_noWeek.pickle")
