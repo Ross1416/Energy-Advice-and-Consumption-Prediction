@@ -72,17 +72,23 @@ def get_model(path):
     return model
 
 
+# SORT DATE TO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # GET PREDICTIONS FROM FITTED MODEL
-def get_predictions(model, date_from, date_to=None, dataset_path=None, show_actual=False):
+def get_predictions(model, date_from, date_to, dataset_path=None, show_actual=False):
+    # date_from = pd.to_datetime(date_from, format='%Y-%m-%d %H:%M:%S')
+    # date_to = pd.to_datetime(date_to, format='%Y-%m-%d %H:%M:%S')
+
     date_range = pd.date_range(start=date_from, end=date_to, freq='10T')
 
     if show_actual:
         # Read in dataset
         df = pd.read_csv(dataset_path)
         df.columns = ["Datetime", "Total_Feeder"]
+
         # Changes the Date_time column to a datetime data type
         df['Datetime'] = pd.to_datetime(df['Datetime'], format='%Y-%m-%d %H:%M:%S')
         df.set_index('Datetime', inplace=True)
+
         # Split the datetime into multiple individual columns
         df["Year"] = df.index.year
         df["Month"] = df.index.month

@@ -73,7 +73,10 @@ def GetModel(path):
 
 
 # GET PREDICTIONS FROM FITTED MODEL
-def GetPredictions(model, date_from, date_to=None):
+def GetPredictions(model, date_from, date_to, save=False, save_folder=None):
+    date_from = pd.to_datetime(date_from, format='%d/%m/%Y')
+    date_to = pd.to_datetime(date_to, format='%d/%m/%Y')
+
     date_range = pd.date_range(start=date_from, end=date_to, freq='10T')
 
     df = pd.DataFrame({'Month': date_range.month, 'DayofWeek': date_range.dayofweek, "DayofMonth": date_range.day, "Hour": date_range.hour, "Minute": date_range.minute}, index=date_range)
@@ -81,6 +84,18 @@ def GetPredictions(model, date_from, date_to=None):
 
     predictions = model.predict(X)
     df['Predictions'] = predictions
+
+    if save:
+        date_from = str(date_from).replace(" ", ".").replace(":", "-")
+        date_to = str(date_to).replace(" ", ".").replace(":", "-")
+
+        if save_folder == None:
+            save_path = date_from + ";" + date_to + ".csv"
+        else:
+            save_path = save_folder + "\\" + date_from + ";" + date_to + ".csv"
+
+        df['Predictions'].to_csv(save_path)
+
     return df['Predictions']
 
 
@@ -89,13 +104,13 @@ def Plot(predictions, save=True, save_folder=None, actuals=None, plot_actual=Fal
     plt.legend()
 
     if save:
-        start_date = str(predictions.first_valid_index()).replace(" ", ".").replace(":", "-")
-        end_date = str(predictions.last_valid_index()).replace(" ", ".").replace(":", "-")
+        date_from = str(predictions.first_valid_index()).replace(" ", ".").replace(":", "-")
+        date_to = str(predictions.last_valid_index()).replace(" ", ".").replace(":", "-")
 
         if save_folder == None:
-            save_path = start_date + ";" + end_date + ".jpg"
+            save_path = date_from + ";" + date_to + ".jpg"
         else:
-            save_path = save_folder + "\\" + start_date + ";" + end_date + ".jpg"
+            save_path = save_folder + "\\" + date_from + ";" + date_to + ".jpg"
 
         plt.savefig(save_path)
 
@@ -103,5 +118,5 @@ def Plot(predictions, save=True, save_folder=None, actuals=None, plot_actual=Fal
 
 
 model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
-df = GetPredictions(model, "02/03/2021", "03/03/2021")
+df = GetPredictions(model, "02/03/2021", "03/03/2021", save=True, save_folder="Predictions")
 Plot(df, save=True, save_folder="Predictions")
