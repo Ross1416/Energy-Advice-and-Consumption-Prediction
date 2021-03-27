@@ -96,11 +96,25 @@ def GetPredictions(model, date_from, date_to, save=False, save_folder=None):
 
         df['Predictions'].to_csv(save_path)
 
-    return df['Predictions']
+    return df['Predictions'].to_frame()
 
 
-def Plot(predictions, save=True, save_folder=None, actuals=None, plot_actual=False):
-    predictions.plot()
+# PLOTS PREDICTIONS ON GRAPH
+def Plot(predictions, save=True, save_folder=None, actuals=None):
+    ax = predictions.plot()
+
+    if actuals is not None:
+        try:
+            actuals = actuals.loc[predictions.first_valid_index():predictions.last_valid_index()]
+            actuals.columns = ["Actual"]
+            actuals.plot(ax=ax)
+        except:
+            print("The date time range is not within the dataset.")
+
+    plt.ylabel("Energy Consumption (kW)")
+    plt.xlabel("Date and time")
+    plt.title("Energy Consumption against Date and time")
+    plt.tight_layout()
     plt.legend()
 
     if save:
@@ -118,5 +132,12 @@ def Plot(predictions, save=True, save_folder=None, actuals=None, plot_actual=Fal
 
 
 model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
+# df = GetPredictions(model, "02/03/2015", "03/03/2015", save=True, save_folder="Predictions")
 df = GetPredictions(model, "02/03/2021", "03/03/2021", save=True, save_folder="Predictions")
-Plot(df, save=True, save_folder="Predictions")
+
+data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
+data.columns = ["Datetime", "Total_Feeder"]
+data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
+data.set_index('Datetime', inplace=True)
+
+Plot(df, save=True, save_folder="Predictions", actuals=data)

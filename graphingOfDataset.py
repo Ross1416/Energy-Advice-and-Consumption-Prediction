@@ -38,7 +38,7 @@ df.set_index('Datetime', inplace=True)      # Replace the numeric index with the
 # PLOT OF ENTIRE DATASET
 df.plot()
 plt.ylabel("Energy Consumption (kW)")
-plt.xlabel("Date and time")
+
 plt.title("Energy Consumption against Date and time")
 plt.tight_layout()
 plt.show()
