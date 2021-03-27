@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.svm import SVR
+import numpy as np
+from sklearn.model_selection import TimeSeriesSplit
 
 df = pd.read_csv("Unbroken_dataset01.csv", )
 
@@ -21,15 +23,20 @@ df["Minute"] = df.index.minute
 X = df.drop(['Total_Feeder'], axis=1).values
 y = df['Total_Feeder'].values
 
+tscv = TimeSeriesSplit()
 
-train_split = 0.9
-num_train = int(len(X) * 0.9)
-X_train = X[:num_train]
-X_test = X[num_train:]
+for train_index, test_index in tscv.split(X):
+    print("TRAIN:", train_index, "TEST:", test_index)
+    X_train, X_test = X[train_index], X[test_index]
+    y_train, y_test = y[train_index], y[test_index]
 
-y_train = y[:num_train]
-y_test = y[num_train:]
-
+# train_split = 0.9
+# num_train = int(len(X) * 0.9)
+# X_train = X[:num_train]
+# X_test = X[num_train:]
+#
+# y_train = y[:num_train]
+# y_test = y[num_train:]
 
 svr = SVR(kernel='rbf', C=40, gamma='auto')
 
@@ -42,3 +49,4 @@ df['Prediction'] = predictions
 df['Total_Feeder'].plot()
 df['Prediction'].plot()
 plt.show()
+

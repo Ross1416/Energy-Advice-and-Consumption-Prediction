@@ -49,7 +49,7 @@ df_future = pd.DataFrame(X, columns=['Month', 'DayofWeek', 'DayofMonth', 'Hour',
 X2 = day_df.drop(['Total_Feeder'], axis=1).values
 
 # model_file = "model.pickle"
-model_file = "fullmodel_noYear_noWeek.pickle"
+model_file = "../Models/fullmodel_noYear_noWeek.pickle"
 
 with open(model_file, 'rb') as file:
     svr = pickle.load(file)
