@@ -51,12 +51,12 @@ def CreateModel(dataset_path, output_path):
     model.fit(X_train, y_train)
 
     time_taken = time.time() - start_time
-    print("Time taken:", time_taken)
+    print("Time taken:", time_taken)    # 2402.46537232399 seconds
 
     accuracy_train = model.score(X_train, y_train)
     accuracy_test = model.score(X_test, y_test)
-    print("Training accuracy:", accuracy_train)
-    print("Testing accuracy:", accuracy_test)  ## only 67%
+    print("Training accuracy:", accuracy_train)  # 0.9447776916752073
+    print("Testing accuracy:", accuracy_test)  # 0.6614105265554282
 
     if output_path is not None:
         # Save the model to external file
@@ -70,18 +70,17 @@ def CreateModel(dataset_path, output_path):
 def GetModel(path):
     with open(path, 'rb') as file:
         model = pickle.load(file)
-
     return model
 
 
 # MAKE PREDICTIONS FROM FITTED MODEL
-def MakePredictions(model, date_from, date_to, save=False, save_folder=None):
+def MakePredictions(model, start_date, end_date, save=False, save_folder=None):
     # Convert dates into pandas datetime datatype
-    date_from = pd.to_datetime(date_from, format='%d/%m/%Y')
-    date_to = pd.to_datetime(date_to, format='%d/%m/%Y')
+    start_date = pd.to_datetime(start_date, format='%d/%m/%Y')
+    end_date = pd.to_datetime(end_date, format='%d/%m/%Y')
 
     # Create date range with 10 minute intervals
-    date_range = pd.date_range(start=date_from, end=date_to, freq='10T')
+    date_range = pd.date_range(start=start_date, end=end_date, freq='10T')
 
     # Create a list from the data range
     df = pd.DataFrame({'Month': date_range.month, 'DayofWeek': date_range.dayofweek, "DayofMonth": date_range.day, "Hour": date_range.hour, "Minute": date_range.minute}, index=date_range)
@@ -93,13 +92,13 @@ def MakePredictions(model, date_from, date_to, save=False, save_folder=None):
 
     # Save the predictions to a .csv file if wanted
     if save:
-        date_from = str(date_from).replace(" ", ".").replace(":", "-")
-        date_to = str(date_to).replace(" ", ".").replace(":", "-")
+        start_date = str(start_date).replace(" ", ".").replace(":", "-")
+        end_date = str(end_date).replace(" ", ".").replace(":", "-")
 
         if save_folder == None:
-            save_path = date_from + ";" + date_to + ".csv"
+            save_path = start_date + ";" + end_date + ".csv"
         else:
-            save_path = save_folder + "\\" + date_from + ";" + date_to + ".csv"
+            save_path = save_folder + "\\" + start_date + ";" + end_date + ".csv"
 
         df['Predictions'].to_csv(save_path)
 
@@ -143,14 +142,14 @@ def PlotPredictions(predictions, save=False, save_folder=None, actuals=None):
 
 
 
-# model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/test.pickle")
-model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
-df = MakePredictions(model, "02/03/2015", "03/03/2015", save=True, save_folder="Predictions")
-
-data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
-data.columns = ["Datetime", "Total_Feeder"]
-data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
-data.set_index('Datetime', inplace=True)
+# model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/RBF_Year_Month_DoW_DoM_Hour_Min.pickle")
+# model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
+# df = MakePredictions(model, "02/03/2015", "03/03/2015", save=True, save_folder="Predictions")
 #
-PlotPredictions(df, save=True, save_folder="Predictions", actuals=data)
-# PlotPredictions(df, save=True, save_folder="Predictions")
+# data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
+# data.columns = ["Datetime", "Total_Feeder"]
+# data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
+# data.set_index('Datetime', inplace=True)
+# #
+# PlotPredictions(df, save=True, save_folder="Predictions", actuals=data)
+# # PlotPredictions(df, save=True, save_folder="Predictions")
