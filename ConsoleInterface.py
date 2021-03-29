@@ -1,3 +1,5 @@
+# PROOF OF CONCEPT
+
 from Main import *
 
 print("##########################################")
@@ -13,9 +15,9 @@ print("End date")
 end_date = input("> ")
 
 model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
-df = GetPredictions(model, start_date, end_date)
+df = MakePredictions(model, start_date, end_date)
 
-Plot(df)
+PlotPredictions(df)
 
 
 

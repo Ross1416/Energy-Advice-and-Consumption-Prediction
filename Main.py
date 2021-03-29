@@ -8,7 +8,7 @@ import time
 
 
 # FITS MODEL TO DATASET AND SAVES IT
-def CreateModel(dataset_path, output_path, save):
+def CreateModel(dataset_path, output_path):
     # Read in dataset and perform preliminary sorting
     df = pd.read_csv(dataset_path)
     df.columns = ["Datetime", "Total_Feeder"]
@@ -16,7 +16,7 @@ def CreateModel(dataset_path, output_path, save):
     df.set_index('Datetime', inplace=True)
 
     # Split the datetime into multiple individual columns
-    df["Year"] = df.year
+    df["Year"] = df.index.year
     df["Month"] = df.index.month
     df["DayofWeek"] = df.index.dayofweek
     df["DayofMonth"] = df.index.day
@@ -32,7 +32,7 @@ def CreateModel(dataset_path, output_path, save):
     X = df.drop(['Total_Feeder'], axis=1).values
     y = df['Total_Feeder'].values
 
-    train_split = 0.9
+    train_split = 0.9   ##   MIGHT BE LOSING SOME DATA WITH THIS METHOD? better way to do it?### https://medium.com/@alexstrebeck/training-and-testing-machine-learning-models-e1f27dc9b3cb
     num_train = int(len(X) * train_split)
     X_train = X[:num_train]
     X_test = X[num_train:]
@@ -53,10 +53,12 @@ def CreateModel(dataset_path, output_path, save):
     time_taken = time.time() - start_time
     print("Time taken:", time_taken)
 
-    accuracy = model.score(X_test, y_test)
-    print(accuracy)  ## only 67%
+    accuracy_train = model.score(X_train, y_train)
+    accuracy_test = model.score(X_test, y_test)
+    print("Training accuracy:", accuracy_train)
+    print("Testing accuracy:", accuracy_test)  ## only 67%
 
-    if save:
+    if output_path is not None:
         # Save the model to external file
         with open(output_path, 'wb') as file:
             pickle.dump(model, file)
@@ -72,19 +74,24 @@ def GetModel(path):
     return model
 
 
-# GET PREDICTIONS FROM FITTED MODEL
-def GetPredictions(model, date_from, date_to, save=False, save_folder=None):
+# MAKE PREDICTIONS FROM FITTED MODEL
+def MakePredictions(model, date_from, date_to, save=False, save_folder=None):
+    # Convert dates into pandas datetime datatype
     date_from = pd.to_datetime(date_from, format='%d/%m/%Y')
     date_to = pd.to_datetime(date_to, format='%d/%m/%Y')
 
+    # Create date range with 10 minute intervals
     date_range = pd.date_range(start=date_from, end=date_to, freq='10T')
 
+    # Create a list from the data range
     df = pd.DataFrame({'Month': date_range.month, 'DayofWeek': date_range.dayofweek, "DayofMonth": date_range.day, "Hour": date_range.hour, "Minute": date_range.minute}, index=date_range)
     X = df.values.tolist()
 
+    # Make predictions on the datarange
     predictions = model.predict(X)
     df['Predictions'] = predictions
 
+    # Save the predictions to a .csv file if wanted
     if save:
         date_from = str(date_from).replace(" ", ".").replace(":", "-")
         date_to = str(date_to).replace(" ", ".").replace(":", "-")
@@ -100,9 +107,11 @@ def GetPredictions(model, date_from, date_to, save=False, save_folder=None):
 
 
 # PLOTS PREDICTIONS ON GRAPH
-def Plot(predictions, save=False, save_folder=None, actuals=None):
+def PlotPredictions(predictions, save=False, save_folder=None, actuals=None):
+    # Plot predictions on a graph
     ax = predictions.plot()
 
+    # Plot actual values on graph if actuals is provided and within the date range
     if actuals is not None:
         try:
             actuals = actuals.loc[predictions.first_valid_index():predictions.last_valid_index()]
@@ -111,12 +120,14 @@ def Plot(predictions, save=False, save_folder=None, actuals=None):
         except:
             print("The date time range is not within the dataset.")
 
+    # Format the graph
     plt.ylabel("Energy Consumption (kW)")
     plt.xlabel("Date and time")
     plt.title("Energy Consumption against Date and time")
     plt.tight_layout()
     plt.legend()
 
+    # Save plot to a .jpg file if required
     if save:
         date_from = str(predictions.first_valid_index()).replace(" ", ".").replace(":", "-")
         date_to = str(predictions.last_valid_index()).replace(" ", ".").replace(":", "-")
@@ -131,7 +142,15 @@ def Plot(predictions, save=False, save_folder=None, actuals=None):
     plt.show()
 
 
-# model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
-# df = GetPredictions(model, "02/03/2021", "03/03/2021", save=True, save_folder="Predictions")
+
+# model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/test.pickle")
+model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
+df = MakePredictions(model, "02/03/2015", "03/03/2015", save=True, save_folder="Predictions")
+
+data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
+data.columns = ["Datetime", "Total_Feeder"]
+data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
+data.set_index('Datetime', inplace=True)
 #
-# Plot(df, save=True, save_folder="Predictions")
+PlotPredictions(df, save=True, save_folder="Predictions", actuals=data)
+# PlotPredictions(df, save=True, save_folder="Predictions")

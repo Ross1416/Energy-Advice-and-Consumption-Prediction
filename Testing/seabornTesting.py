@@ -2,7 +2,7 @@ import seaborn
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data = pd.read_csv("../trainingDataset.csv")  # Read unbroken CSV data file
+data = pd.read_csv("trainingDataset.csv")  # Read unbroken CSV data file
 
 data.columns = ["Date_time", "Total_Feeder"]  # Rename unnamed column to Data_time
 
