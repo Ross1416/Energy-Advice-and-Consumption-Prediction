@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.neighbors import RadiusNeighborsRegressor
+from sklearn.neighbors import RadiusNeighborsRegressor, KNeighborsRegressor
 from sklearn.svm import SVR
 import pickle
 import time
@@ -16,7 +16,7 @@ def CreateModel(dataset_path, output_path):
     df.set_index('Datetime', inplace=True)
 
     # Split the datetime into multiple individual columns
-    df["Year"] = df.index.year
+    # df["Year"] = df.index.year
     df["Month"] = df.index.month
     df["DayofWeek"] = df.index.dayofweek
     df["DayofMonth"] = df.index.day
@@ -41,22 +41,22 @@ def CreateModel(dataset_path, output_path):
     y_test = y[num_train:]
 
     # Create Regressor model
-    model = SVR(kernel='rbf', C=40, gamma='auto')
+    # model = SVR(kernel='rbf', C=40, gamma='auto')
     # model = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=20)
-    # model = RadiusNeighborsRegressor(radius=4.3)
+    model = KNeighborsRegressor(n_neighbors=5)
 
     start_time = time.time()
 
     # Fit model to data
     model.fit(X_train, y_train)
 
-    time_taken = time.time() - start_time
-    print("Time taken:", time_taken)    # 2402.46537232399 seconds
+    time_taken = time.time() - start_time           # RBF                           # RFR                       #KNN
+    print("Time taken:", time_taken)                # 2402.46537232399 seconds      3.545670509338379           0.391770601272583
 
     accuracy_train = model.score(X_train, y_train)
     accuracy_test = model.score(X_test, y_test)
-    print("Training accuracy:", accuracy_train)  # 0.9447776916752073
-    print("Testing accuracy:", accuracy_test)  # 0.6614105265554282
+    print("Training accuracy:", accuracy_train)     # 0.9447776916752073            0.7372641404547604          0.9403859188290737
+    print("Testing accuracy:", accuracy_test)       # 0.6614105265554282            0.77431329514064            0.8014318330506364
 
     if output_path is not None:
         # Save the model to external file
@@ -142,14 +142,14 @@ def PlotPredictions(predictions, save=False, save_folder=None, actuals=None):
 
 
 
-# model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/RBF_Year_Month_DoW_DoM_Hour_Min.pickle")
-# model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
-# df = MakePredictions(model, "02/03/2015", "03/03/2015", save=True, save_folder="Predictions")
+model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/KNN_Month_DoW_DoM_Hour_Min.pickle")
+model = GetModel("Models/KNN_Month_DoW_DoM_Hour_Min.pickle")
+df = MakePredictions(model, "02/03/2015", "03/04/2015", save=True, save_folder="Predictions")
 #
-# data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
-# data.columns = ["Datetime", "Total_Feeder"]
-# data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
-# data.set_index('Datetime', inplace=True)
-# #
-# PlotPredictions(df, save=True, save_folder="Predictions", actuals=data)
+data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
+data.columns = ["Datetime", "Total_Feeder"]
+data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
+data.set_index('Datetime', inplace=True)
+#
+PlotPredictions(df, save=True, save_folder="Predictions", actuals=data)
 # # PlotPredictions(df, save=True, save_folder="Predictions")
