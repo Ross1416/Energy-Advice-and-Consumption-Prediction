@@ -8,7 +8,7 @@ import time
 
 
 # FITS MODEL TO DATASET AND SAVES IT
-def CreateModel(dataset_path, output_path, type='KNN'):
+def CreateModel(dataset_path, output_path=None, type='KNN'):
 
     # Create Regressor model
     if type == "KNN":
@@ -16,7 +16,7 @@ def CreateModel(dataset_path, output_path, type='KNN'):
     elif type == "SVR":
         model = SVR(kernel='rbf', C=40, gamma='auto')
     elif type == "RFR":
-        model = RandomForestRegressor(n_estimators=100, max_depth=12)
+        model = RandomForestRegressor(n_estimators=100, max_depth=10)
     else:
         print("Not a valid regression algorithm.")
 
@@ -57,13 +57,13 @@ def CreateModel(dataset_path, output_path, type='KNN'):
     # Fit model to data
     model.fit(X_train, y_train)
 
-    time_taken = time.time() - start_time           # RBF                           # RFR                       #KNN
-    print("Time taken:", time_taken)                # 2402.46537232399 seconds      3.545670509338379           0.391770601272583
+    time_taken = time.time() - start_time                       # RBF                           # RFR                       #KNN
+    print("Time taken:", time_taken, "seconds")                 # 2402.46537232399 seconds      3.545670509338379           0.391770601272583
 
     accuracy_train = model.score(X_train, y_train)
     accuracy_test = model.score(X_test, y_test)
-    print("Training accuracy:", accuracy_train)     # 0.9447776916752073            0.7372641404547604          0.9403859188290737
-    print("Testing accuracy:", accuracy_test)       # 0.6614105265554282            0.77431329514064            0.8014318330506364
+    print("Training accuracy:", accuracy_train)                  # 0.9447776916752073            0.7372641404547604          0.9403859188290737
+    print("Testing accuracy:", accuracy_test)                    # 0.6614105265554282            0.77431329514064            0.8014318330506364
 
     if output_path is not None:
         # Save the model to external file
@@ -148,14 +148,14 @@ def PlotPredictions(predictions, save=False, save_folder=None, actuals=None):
     plt.show()
 
 
-model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/RFR_Month_DoW_DoM_Hour_Min.pickle")
-model = GetModel("Models/RFR_Month_DoW_DoM_Hour_Min.pickle")
-df = MakePredictions(model, "02/03/2015", "03/03/2015", save=True, save_folder="Predictions")
+model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/SVR_Month_DoW_DoM_Hour_Min.pickle", "SVR") # "Models/RFR_Month_DoW_DoM_Hour_Min.pickle"
+# model = GetModel("Models/SVR_Month_DoW_DoM_Hour_Min.pickle")
+df = MakePredictions(model, "02/03/2015", "03/03/2015", save=False, save_folder="Predictions")
 #
 data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
 data.columns = ["Datetime", "Total_Feeder"]
 data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
 data.set_index('Datetime', inplace=True)
 #
-PlotPredictions(df, save=True, save_folder="Predictions", actuals=data)
+PlotPredictions(df, save=False, save_folder="Predictions", actuals=data)
 # # PlotPredictions(df, save=True, save_folder="Predictions")
