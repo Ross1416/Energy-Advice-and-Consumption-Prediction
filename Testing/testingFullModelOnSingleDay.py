@@ -50,7 +50,7 @@ y_train = y[:num_train]
 y_test = y[num_train:]
 
 # model_file = "fullmodel.pickle"
-model_file = "../Models/fullmodel_noYear_noWeek.pickle"
+model_file = "../Models/old/fullmodel_noYear_noWeek.pickle"
 # model_file = "model.pickle"
 
 

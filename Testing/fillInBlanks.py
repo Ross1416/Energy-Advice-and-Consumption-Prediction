@@ -26,7 +26,7 @@ df_nans["Minute"] = df_nans.index.minute
 X = df_nans.drop(['Total_Feeder'], axis=1).values
 
 
-with open("../Models/fullmodel_noYear_noWeek.pickle", 'rb') as file:
+with open("../Models/old/fullmodel_noYear_noWeek.pickle", 'rb') as file:
     model = pickle.load(file)
 
 predictions = model.predict(X)

@@ -14,7 +14,7 @@ start_date = input("> ")
 print("End date")
 end_date = input("> ")
 
-model = GetModel("Models/fullmodel_noYear_noWeek.pickle")
+model = GetModel("Models/old/fullmodel_noYear_noWeek.pickle")
 df = MakePredictions(model, start_date, end_date)
 
 PlotPredictions(df)

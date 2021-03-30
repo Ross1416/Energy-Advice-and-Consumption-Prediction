@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.neighbors import RadiusNeighborsRegressor, KNeighborsRegressor
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.svm import SVR
 import pickle
 import time
@@ -148,11 +148,12 @@ def PlotPredictions(predictions, save=False, save_folder=None, actuals=None):
     plt.show()
 
 
-model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/SVR_Month_DoW_DoM_Hour_Min.pickle", "SVR") # "Models/RFR_Month_DoW_DoM_Hour_Min.pickle"
+model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", type="SVR") # "Models/RFR_Month_DoW_DoM_Hour_Min.pickle"
 # model = GetModel("Models/SVR_Month_DoW_DoM_Hour_Min.pickle")
 df = MakePredictions(model, "02/03/2015", "03/03/2015", save=False, save_folder="Predictions")
 #
 data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
+data.columns = ["Datetime", "Total_Feeder"]
 data.columns = ["Datetime", "Total_Feeder"]
 data['Datetime'] = pd.to_datetime(data['Datetime'], format='%Y-%m-%d %H:%M:%S')
 data.set_index('Datetime', inplace=True)

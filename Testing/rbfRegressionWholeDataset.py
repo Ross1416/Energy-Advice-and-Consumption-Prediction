@@ -45,7 +45,7 @@ X_test = X[num_train:]
 y_train = y[:num_train]
 y_test = y[num_train:]
 
-model_file = "../Models/fullmodel_noYear_noWeek.pickle"
+model_file = "../Models/old/fullmodel_noYear_noWeek.pickle"
 
 svr = SVR(kernel='rbf', C=40, gamma='auto')
 
