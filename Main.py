@@ -8,7 +8,18 @@ import time
 
 
 # FITS MODEL TO DATASET AND SAVES IT
-def CreateModel(dataset_path, output_path):
+def CreateModel(dataset_path, output_path, type='KNN'):
+
+    # Create Regressor model
+    if type == "KNN":
+        model = KNeighborsRegressor(n_neighbors=5)
+    elif type == "SVR":
+        model = SVR(kernel='rbf', C=40, gamma='auto')
+    elif type == "RFR":
+        model = RandomForestRegressor(n_estimators=100, max_depth=12)
+    else:
+        print("Not a valid regression algorithm.")
+
     # Read in dataset and perform preliminary sorting
     df = pd.read_csv(dataset_path)
     df.columns = ["Datetime", "Total_Feeder"]
@@ -40,10 +51,6 @@ def CreateModel(dataset_path, output_path):
     y_train = y[:num_train]
     y_test = y[num_train:]
 
-    # Create Regressor model
-    # model = SVR(kernel='rbf', C=40, gamma='auto')
-    # model = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=20)
-    model = KNeighborsRegressor(n_neighbors=5)
 
     start_time = time.time()
 
@@ -141,10 +148,9 @@ def PlotPredictions(predictions, save=False, save_folder=None, actuals=None):
     plt.show()
 
 
-
-model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/KNN_Month_DoW_DoM_Hour_Min.pickle")
-model = GetModel("Models/KNN_Month_DoW_DoM_Hour_Min.pickle")
-df = MakePredictions(model, "02/03/2015", "03/04/2015", save=True, save_folder="Predictions")
+model = CreateModel("Energy_Advice_and_Consumption_Prediction_Dataset.csv", "Models/RFR_Month_DoW_DoM_Hour_Min.pickle")
+model = GetModel("Models/RFR_Month_DoW_DoM_Hour_Min.pickle")
+df = MakePredictions(model, "02/03/2015", "03/03/2015", save=True, save_folder="Predictions")
 #
 data = pd.read_csv("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
 data.columns = ["Datetime", "Total_Feeder"]
