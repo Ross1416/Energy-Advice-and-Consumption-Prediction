@@ -76,7 +76,7 @@ plt.show()
 
 
 # PLOT OF A SINGLE MONTH
-df.loc["2015-03"].plot()
+df.loc["2015-09"].plot()
 # df.loc["2015-09"].plot()
 plt.ylabel("Energy Consumption (kW)")
 plt.xlabel("Day of Month")
@@ -91,7 +91,7 @@ ax = df.loc["2015"].plot()
 mean_year.plot(ax=ax)
 plt.ylabel("Energy Consumption (kW)")
 plt.xlabel("Date")
-plt.title("Energy Consumption against time in 2014")
+plt.title("Energy Consumption against time in 2015")
 plt.tight_layout()
 plt.show()
 
