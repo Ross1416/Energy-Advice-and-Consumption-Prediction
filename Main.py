@@ -101,6 +101,8 @@ def MakePredictions(model, start_date, end_date, save=False, save_folder=None):
     predictions = model.predict(X)
     df['Predictions'] = predictions
 
+    predictions_df = df['Predictions'].to_frame()
+
     # Save the predictions to a .csv file if wanted
     if save:
         start_date = str(start_date).replace(" ", ".").replace(":", "-")
@@ -111,9 +113,9 @@ def MakePredictions(model, start_date, end_date, save=False, save_folder=None):
         else:
             save_path = save_folder + "\\" + start_date + ";" + end_date + ".csv"
 
-        df['Predictions'].to_csv(save_path)
+        predictions_df.to_csv(save_path)
 
-    return df['Predictions'].to_frame()
+    return predictions_df
 
 
 # PLOTS PREDICTIONS ON GRAPH
@@ -151,10 +153,10 @@ def PlotPredictions(predictions, save=False, save_folder=None, actuals=None):
 
     plt.show()
 
-
-data = GetData("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
-# model = CreateModel(data, "Models/test.pickle", type="KNN")
-model = GetModel("Models/KNN_Month_DoW_DoM_Hour_Min.pickle")
-predictions = MakePredictions(model, "01/03/2015", "02/03/2015", save=False, save_folder="Predictions")
-PlotPredictions(predictions, save=False, save_folder="Predictions", actuals=data)
+# MAIN CODE
+# data = GetData("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
+# model = CreateModel(data, "Models/KNN.pickle", type="KNN")
+# model = GetModel("Models/KNN.pickle")
+# predictions = MakePredictions(model, "01/03/2015", "02/03/2015", save=False, save_folder="Predictions")
+# PlotPredictions(predictions, save=False, save_folder="Predictions", actuals=data)
 

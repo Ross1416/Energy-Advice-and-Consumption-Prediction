@@ -1,5 +1,3 @@
-# PROOF OF CONCEPT
-
 from Main import *
 
 print("##########################################")
