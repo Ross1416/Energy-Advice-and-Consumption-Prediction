@@ -55,3 +55,6 @@ plt.title("Energy Consumption against Date and time for entire dataset")
 plt.tight_layout()
 plt.legend()
 plt.show()
+
+# Save filled dataset to csv file
+data.to_csv("Energy_Advice_and_Consumption_Prediction_Dataset_Filled.csv")
