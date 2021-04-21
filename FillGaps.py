@@ -4,7 +4,9 @@ from Main import *
 data = GetData("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
 
 # Get the data with null energy values from the dataset
-df_nans = data[data.isna().all(axis=1)].copy()
+df_nans = data.loc[data["Total_Feeder"].isna()].copy()
+# df_nans = data.loc[pd.isna(data["Total_Feeder"])].copy()
+# df_nans = data[data.isna().all(axis=1)].copy()
 
 # Split the datetime into multiple individual columns
 df_nans["Month"] = df_nans.index.month

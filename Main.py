@@ -66,7 +66,7 @@ def CreateModel(data, output_path=None, type='KNN'):
     # Calculate and output the accuracies
     score_train = model.score(X_train, y_train)
     score_test = model.score(X_test, y_test)                    # Accuracy
-    print("Training score:", score_train)                       # 0.9447776916752073            0.7372641404547604          0.9403859188290737
+    print("Training score:", score_train)                       # 0.9447776916752073            0.7326741404547604          0.9403859188290737
     print("Testing score:", score_test)                         # 0.6614105265554282            0.77431329514064            0.8014318330506364
 
     # Save the model to external file if path is provided
@@ -153,10 +153,22 @@ def PlotPredictions(predictions, save=False, save_folder=None, actuals=None):
 
     plt.show()
 
-# MAIN CODE
-# data = GetData("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
-# model = CreateModel(data, "Models/KNN.pickle", type="KNN")
-# model = GetModel("Models/KNN.pickle")
-# predictions = MakePredictions(model, "01/03/2015", "02/03/2015", save=False, save_folder="Predictions")
-# PlotPredictions(predictions, save=False, save_folder="Predictions", actuals=data)
 
+# MAIN CODE
+data = GetData("Energy_Advice_and_Consumption_Prediction_Dataset.csv")
+
+# model = CreateModel(data, type="KNN")
+# model = CreateModel(data, "Models/KNN.pickle", type="KNN")
+# model = CreateModel(data, "Models/RFR.pickle", type="RFR")
+# model = CreateModel(data, "Models/SVR.pickle", type="SVR")
+
+model = GetModel("Models/KNN.pickle")
+# model = GetModel("Models/RFR.pickle")
+# model = GetModel("Models/SVR.pickle")
+
+predictions = MakePredictions(model, "01/03/2015", "02/03/2015")
+# predictions = MakePredictions(model, "01/03/2015", "02/03/2015", save=True, save_folder="Predictions")
+
+PlotPredictions(predictions)
+# PlotPredictions(predictions, actuals=data)
+# PlotPredictions(predictions, actuals=data, save=True, save_folder="Predictions")
